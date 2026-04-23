@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Demo Console</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="page-shell">
+        <aside class="sidebar">
+            <div>
+                <p class="eyebrow">Healthcare Operations Platform</p>
+                <h1>Demo Console</h1>
+                <p class="sidebar-copy">A lightweight frontend for showing the backend in action during demos.</p>
+            </div>
+
+            <div class="auth-card">
+                <div class="auth-header">
+                    <strong id="auth-state">Signed out</strong>
+                    <button id="logout-button" class="ghost-button hidden" type="button">Logout</button>
+                </div>
+
+                <form id="login-form" class="stack">
+                    <label>
+                        <span>Username</span>
+                        <input id="username" name="username" type="text" placeholder="Enter your username" autocomplete="username" required>
+                    </label>
+                    <label>
+                        <span>Password</span>
+                        <input id="password" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" required>
+                    </label>
+                    <button class="primary-button" type="submit">Sign in</button>
+                </form>
+
+                <div id="current-user" class="current-user hidden"></div>
+
+                <div class="demo-credentials">
+                    <p>Use a valid application account to sign in.</p>
+                </div>
+            </div>
+
+            <div id="status-panel" class="status-panel">Sign in to start exploring the API.</div>
+        </aside>
+
+        <main class="content">
+            <section class="hero">
+                <div>
+                    <p class="eyebrow">Demo-friendly frontend</p>
+                    <h2>Show the platform without living in Swagger</h2>
+                    <p>This screen talks directly to the same API you already built, so it is useful for walkthroughs, interviews, and stakeholder demos.</p>
+                </div>
+                <div class="hero-badges">
+                    <span>Patients</span>
+                    <span>Appointments</span>
+                    <span>Prescriptions</span>
+                    <span>Audit Logs</span>
+                </div>
+            </section>
+
+            <section class="grid">
+                <article class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">Patient Search</p>
+                            <h3>Find patients quickly</h3>
+                        </div>
+                        <button id="load-patients" class="secondary-button" type="button">Search</button>
+                    </div>
+
+                    <form id="patients-form" class="filters">
+                        <input name="search" placeholder="Name, MRN, email, phone">
+                        <input name="phone" placeholder="Phone">
+                        <input name="mrn" placeholder="MRN">
+                        <input name="email" placeholder="Email">
+                        <select name="is_active">
+                            <option value="">Any status</option>
+                            <option value="true">Active only</option>
+                            <option value="false">Inactive only</option>
+                        </select>
+                    </form>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>MRN</th>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="patients-body">
+                                <tr><td colspan="6" class="empty-state">Run a patient search after signing in.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="editor-shell">
+                        <div class="editor-header">
+                            <div>
+                                <p class="eyebrow">Patient Form</p>
+                                <h4 id="patient-form-title">Create patient</h4>
+                            </div>
+                            <button id="patient-reset" class="ghost-button" type="button">New</button>
+                        </div>
+
+                        <form id="patient-editor-form" class="filters editor-grid">
+                            <input type="hidden" name="id">
+                            <input name="mrn" placeholder="MRN" required>
+                            <input name="first_name" placeholder="First name" required>
+                            <input name="last_name" placeholder="Last name" required>
+                            <input name="date_of_birth" type="date" required>
+                            <select name="gender" required>
+                                <option value="MALE">Male</option>
+                                <option value="FEMALE">Female</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                            <input name="phone" placeholder="Phone">
+                            <input name="email" type="email" placeholder="Email">
+                            <input name="blood_group" placeholder="Blood group">
+                            <input name="address" placeholder="Address">
+                            <input name="emergency_contact_name" placeholder="Emergency contact name">
+                            <input name="emergency_contact_phone" placeholder="Emergency contact phone">
+                            <select name="is_active">
+                                <option value="true">Active</option>
+                                <option value="false">Inactive</option>
+                            </select>
+                        </form>
+
+                        <div class="form-actions">
+                            <button id="save-patient" class="primary-button" type="button">Save patient</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">Appointments</p>
+                            <h3>Review the day</h3>
+                        </div>
+                        <button id="load-appointments" class="secondary-button" type="button">Load</button>
+                    </div>
+
+                    <form id="appointments-form" class="filters">
+                        <input name="from_date" type="date">
+                        <input name="to_date" type="date">
+                        <input name="doctor_id" type="number" min="1" placeholder="Doctor ID">
+                        <input name="department_id" type="number" min="1" placeholder="Department ID">
+                        <select name="status">
+                            <option value="">Any status</option>
+                            <option value="SCHEDULED">Scheduled</option>
+                            <option value="COMPLETED">Completed</option>
+                            <option value="CANCELLED">Cancelled</option>
+                            <option value="NO_SHOW">No show</option>
+                        </select>
+                    </form>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Patient</th>
+                                    <th>Doctor</th>
+                                    <th>Prescription</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="appointments-body">
+                                <tr><td colspan="7" class="empty-state">Load appointments to see the schedule.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="editor-shell">
+                        <div class="editor-header">
+                            <div>
+                                <p class="eyebrow">Appointment Form</p>
+                                <h4 id="appointment-form-title">Create appointment</h4>
+                            </div>
+                            <button id="appointment-reset" class="ghost-button" type="button">New</button>
+                        </div>
+
+                        <form id="appointment-editor-form" class="filters editor-grid">
+                            <input type="hidden" name="id">
+                            <input name="patient_id" type="number" min="1" placeholder="Patient ID" required>
+                            <input name="doctor_id" type="number" min="1" placeholder="Doctor ID" required>
+                            <input name="department_id" type="number" min="1" placeholder="Department ID" required>
+                            <input name="appointment_date" type="date" required>
+                            <input name="start_time" type="time" required>
+                            <input name="end_time" type="time" required>
+                            <input name="reason" placeholder="Reason">
+                            <input name="remarks" placeholder="Remarks">
+                            <select name="status">
+                                <option value="SCHEDULED">Scheduled</option>
+                                <option value="COMPLETED">Completed</option>
+                                <option value="CANCELLED">Cancelled</option>
+                                <option value="NO_SHOW">No show</option>
+                            </select>
+                        </form>
+
+                        <div id="appointment-selection" class="selection-note">Tip: choose a patient from the search table to fill `patient_id` automatically.</div>
+
+                        <div class="form-actions">
+                            <button id="save-appointment" class="primary-button" type="button">Save appointment</button>
+                            <button id="update-appointment-status" class="secondary-button" type="button">Update status only</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">Prescriptions</p>
+                            <h3>Appointment-linked treatment</h3>
+                        </div>
+                        <button id="load-prescriptions" class="secondary-button" type="button">Load</button>
+                    </div>
+
+                    <form id="prescriptions-form" class="filters">
+                        <input name="patient_id" type="number" min="1" placeholder="Patient ID">
+                        <input name="appointment_id" type="number" min="1" placeholder="Appointment ID">
+                    </form>
+
+                    <div class="list-wrap" id="prescriptions-list">
+                        <p class="empty-state">Load prescriptions to see medicine details.</p>
+                    </div>
+
+                    <div class="editor-shell">
+                        <div class="editor-header">
+                            <div>
+                                <p class="eyebrow">Prescription Form</p>
+                                <h4 id="prescription-form-title">Create prescription for an appointment</h4>
+                            </div>
+                            <button id="prescription-reset" class="ghost-button" type="button">New</button>
+                        </div>
+
+                        <form id="prescription-editor-form" class="filters editor-grid">
+                            <input type="hidden" name="id">
+                            <input name="appointment_id" type="number" min="1" placeholder="Appointment ID" required>
+                            <input name="patient_id" type="number" min="1" placeholder="Patient ID" required>
+                            <input name="diagnosis" placeholder="Diagnosis">
+                            <input name="notes" placeholder="Notes">
+                        </form>
+
+                        <div id="prescription-selection" class="selection-note">Tip: choose an appointment from the schedule to fill both appointment and patient automatically.</div>
+
+                        <div class="medicine-builder">
+                            <div class="editor-header">
+                                <div>
+                                    <p class="eyebrow">Medicines</p>
+                                    <h4>Add medicine items</h4>
+                                </div>
+                                <button id="add-medicine" class="secondary-button" type="button">Add medicine</button>
+                            </div>
+                            <div id="medicines-editor" class="medicine-list"></div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button id="save-prescription" class="primary-button" type="button">Save prescription</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">Patient Track Record</p>
+                            <h3>Appointments and prescriptions together</h3>
+                        </div>
+                        <button id="load-history" class="secondary-button" type="button">Load</button>
+                    </div>
+
+                    <form id="history-form" class="filters">
+                        <input name="patient_id" type="number" min="1" placeholder="Patient ID">
+                    </form>
+
+                    <div id="history-panel" class="history-panel">
+                        <p class="empty-state">Load a patient history to show their appointment and prescription record together.</p>
+                    </div>
+                </article>
+
+                <article class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">Audit Logs</p>
+                            <h3>Show system activity</h3>
+                        </div>
+                        <button id="load-audit" class="secondary-button" type="button">Load</button>
+                    </div>
+
+                    <form id="audit-form" class="filters">
+                        <input name="entity_type" placeholder="Entity type">
+                        <input name="entity_id" type="number" min="1" placeholder="Entity ID">
+                        <input name="user_id" type="number" min="1" placeholder="User ID">
+                    </form>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>When</th>
+                                    <th>Action</th>
+                                    <th>Entity</th>
+                                    <th>User</th>
+                                    <th>IP</th>
+                                </tr>
+                            </thead>
+                            <tbody id="audit-body">
+                                <tr><td colspan="5" class="empty-state">Admins can load audit activity here.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+            </section>
+        </main>
+    </div>
+
+    <script src="/app.js" defer></script>
+</body>
+</html>

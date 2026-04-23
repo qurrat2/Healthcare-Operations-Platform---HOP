@@ -1,0 +1,41 @@
+## Build outputs
+[Bb]in/
+[Oo]bj/
+
+## User-specific files
+*.user
+*.rsuser
+*.suo
+
+## IDE folders
+.vs/
+.vscode/
+.idea/
+
+## Test and coverage artifacts
+TestResults/
+coverage/
+coverage-*/
+*.coverage
+*.coveragexml
+
+## Logs
+*.log
+
+## OS files
+.DS_Store
+Thumbs.db
+
+## .NET local tool cache & restore cache (do not commit)
+.dotnet/
+.nuget/
+packages/
+
+## Local configuration & secrets
+appsettings.Development.json
+appsettings.*.Local.json
+secrets.json
+*.pfx
+*.pem
+.env
+.env.local

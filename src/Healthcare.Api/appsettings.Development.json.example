@@ -1,0 +1,19 @@
+{
+  "ConnectionStrings": {
+    "HealthcareDb": "Server=localhost;Database=HealthcareDB;Trusted_Connection=True;TrustServerCertificate=True;"
+  },
+  "Authentication": {
+    "Jwt": {
+      "Issuer": "Healthcare.Api",
+      "Audience": "Healthcare.Client",
+      "SecretKey": "REPLACE_WITH_LOCAL_DEV_SECRET_AT_LEAST_32_CHARS",
+      "ExpiryMinutes": 60
+    }
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Debug",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  }
+}

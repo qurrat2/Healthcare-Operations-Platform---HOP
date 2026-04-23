@@ -1,0 +1,164 @@
+@Healthcare.Api_HostAddress = https://localhost:7291
+@adminUsername = your-admin-username
+@adminPassword = your-admin-password
+@receptionUsername = your-reception-username
+@receptionPassword = your-reception-password
+@doctorUsername = your-doctor-username
+@doctorPassword = your-doctor-password
+@adminToken = paste-admin-token-here
+@receptionToken = paste-reception-token-here
+@doctorToken = paste-doctor-token-here
+
+### Login as Admin
+POST {{Healthcare.Api_HostAddress}}/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "{{adminUsername}}",
+  "password": "{{adminPassword}}"
+}
+
+### Login as Receptionist
+POST {{Healthcare.Api_HostAddress}}/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "{{receptionUsername}}",
+  "password": "{{receptionPassword}}"
+}
+
+### Login as Doctor
+POST {{Healthcare.Api_HostAddress}}/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "{{doctorUsername}}",
+  "password": "{{doctorPassword}}"
+}
+
+### Current User
+GET {{Healthcare.Api_HostAddress}}/api/v1/auth/me
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### List Departments
+GET {{Healthcare.Api_HostAddress}}/api/v1/departments?page=1&limit=20
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### Create Department
+POST {{Healthcare.Api_HostAddress}}/api/v1/departments
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "name": "Neurology",
+  "description": "Brain and nervous system care"
+}
+
+### List Patients
+GET {{Healthcare.Api_HostAddress}}/api/v1/patients?page=1&limit=20
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### Search Patients
+GET {{Healthcare.Api_HostAddress}}/api/v1/patients?search=hassan+ali&phone=0311-0000123&mrn=MRN-100010&email=hassan.ali&page=1&limit=20
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### Create Patient
+POST {{Healthcare.Api_HostAddress}}/api/v1/patients
+Content-Type: application/json
+Authorization: Bearer {{receptionToken}}
+
+{
+  "mrn": "MRN-100010",
+  "FirstName": "Hassan",
+  "LastName": "Ali",
+  "date_of_birth": "1995-02-10",
+  "gender": "MALE",
+  "phone": "03110000123",
+  "email": "hassan.ali@example.com",
+  "address": "Lahore, Pakistan",
+  "blood_group": "A+"
+}
+
+### Get Patient By Id
+GET {{Healthcare.Api_HostAddress}}/api/v1/patients/1
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### List Appointments
+GET {{Healthcare.Api_HostAddress}}/api/v1/appointments?page=1&limit=20
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### Filter Appointments
+GET {{Healthcare.Api_HostAddress}}/api/v1/appointments?from_date=2026-04-01&to_date=2026-04-30&doctor_id=1&department_id=1&status=SCHEDULED&page=1&limit=20
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### Check Doctor Availability
+GET {{Healthcare.Api_HostAddress}}/api/v1/appointments/availability?doctor_id=1&date=2026-04-10
+Accept: application/json
+Authorization: Bearer {{receptionToken}}
+
+### Create Appointment
+POST {{Healthcare.Api_HostAddress}}/api/v1/appointments
+Content-Type: application/json
+Authorization: Bearer {{receptionToken}}
+
+{
+  "patient_id": 1,
+  "doctor_id": 1,
+  "department_id": 1,
+  "appointment_date": "2026-04-06",
+  "start_time": "09:00:00",
+  "end_time": "09:30:00",
+  "reason": "Follow-up consultation"
+}
+
+### Update Appointment Status
+PATCH {{Healthcare.Api_HostAddress}}/api/v1/appointments/1/status
+Content-Type: application/json
+Authorization: Bearer {{doctorToken}}
+
+{
+  "status": "COMPLETED"
+}
+
+### Create Prescription
+POST {{Healthcare.Api_HostAddress}}/api/v1/prescriptions
+Content-Type: application/json
+Authorization: Bearer {{doctorToken}}
+
+{
+  "appointment_id": 1,
+  "patient_id": 1,
+  "notes": "Patient advised rest and hydration",
+  "diagnosis": "Mild viral infection",
+  "medicines": [
+    {
+      "MedicineName": "Paracetamol",
+      "dosage": "500mg",
+      "frequency": "3 times daily",
+      "duration_days": 5,
+      "instructions": "After meals"
+    }
+  ]
+}
+
+### List Prescriptions
+GET {{Healthcare.Api_HostAddress}}/api/v1/prescriptions?patient_id=1&page=1&limit=20
+Accept: application/json
+Authorization: Bearer {{doctorToken}}
+
+### Patient History
+GET {{Healthcare.Api_HostAddress}}/api/v1/patients/1/history
+Accept: application/json
+Authorization: Bearer {{doctorToken}}
+
+### Appointment Status Reference
+GET {{Healthcare.Api_HostAddress}}/api/v1/reference/appointment-statuses
+Accept: application/json
+Authorization: Bearer {{adminToken}}
